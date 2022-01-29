@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/text_field_input.dart';
@@ -36,18 +35,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(),
                 flex: 1,
               ),
+              // svg image
               SvgPicture.asset(
                 'assets/images/ic_instagram.svg',
                 color: primaryColor,
                 height: 64,
               ),
               const SizedBox(height: 64),
+              // text form field for email
               TextFieldInput(
                 hintText: 'Enter your email',
                 textEditingController: _emailController,
                 textInputType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 24),
+              // text form field for password
               TextFieldInput(
                 hintText: 'Enter your password',
                 textEditingController: _passwordController,
@@ -55,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPass: true,
               ),
               const SizedBox(height: 24),
+              // login button
               InkWell(
                 onTap: () {},
                 child: Container(
@@ -75,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(),
                 flex: 1,
               ),
+              // signup
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
