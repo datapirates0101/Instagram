@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:instagram/resources/auth_method.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,12 +15,34 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().LogInUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res == 'success') {
+      print(res);
+    } else {
+      showSnakBar(res, context);
+    }
   }
 
   @override
@@ -59,10 +83,16 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
               // login button
               InkWell(
-                onTap: () {},
+                onTap: loginUser,
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: const Text('Log in'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text('Log in'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   decoration: const ShapeDecoration(
@@ -78,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(),
                 flex: 1,
               ),
-              // signup
+              // New signup guide
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

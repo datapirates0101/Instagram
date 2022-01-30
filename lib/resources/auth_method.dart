@@ -9,6 +9,7 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //sign in method
   Future<String> signUpUser({
     required String email,
     required String username,
@@ -26,11 +27,9 @@ class AuthMethods {
         UserCredential userCredential = await _auth
             .createUserWithEmailAndPassword(email: email, password: password);
 
-        //print(userCredential.user!.uid);
-
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
-        
+
         //adding user to database
         await _firestore.collection('users').doc(userCredential.user!.uid).set({
           'name': username,
@@ -42,6 +41,27 @@ class AuthMethods {
           'photoUrl': photoUrl,
         });
         res = "success";
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  //login user
+
+  Future<String> LogInUser(
+      {required String email, required String password}) async {
+    String res = "Some error Occured";
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        res = "success";
+      } else {
+        res = "Please enter all the fields";
       }
     } catch (e) {
       res = e.toString();
