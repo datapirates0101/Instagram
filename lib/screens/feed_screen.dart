@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:instagram/models/post.dart';
@@ -25,7 +27,23 @@ class FeedScreen extends StatelessWidget {
           ),
         ],
       ),
-      body:const PostCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('post').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(color: primaryColor),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) => PostCard(
+              snap: snapshot.data!.docs[index].data(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
