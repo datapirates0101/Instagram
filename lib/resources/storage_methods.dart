@@ -18,7 +18,7 @@ class StorageMethods {
 
     if (isPost) {
       String id = Uuid().v1();
-      ref = ref.child(id);
+      ref =ref.child(id);
     }
 
     // putting in uint8list format -> Upload task like a future but not future
