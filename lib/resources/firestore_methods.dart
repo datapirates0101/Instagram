@@ -67,7 +67,7 @@ class FirestoreMethods {
   ) async {
     try {
       if (text.isNotEmpty) {
-        String commentId = Uuid().v1();
+        String commentId = const Uuid().v1();
         await _firestore
             .collection('post')
             .doc(postId)
